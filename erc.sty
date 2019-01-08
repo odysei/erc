@@ -3,25 +3,49 @@
 %% Originally based on http://www.arj.no/2013/02/03/erc-stg-latex/
 %% But modded a lot
 %%
+%% Daniel Ashbrook, Spring 2019
 %% Phil Garner, Autumn 2015
 %%
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage[round]{natbib}
+\usepackage{xspace}
+\usepackage{doi}
+\usepackage[table]{xcolor}
+\usepackage{parskip}
+\usepackage{booktabs}
+\usepackage[caption=false]{subfig}
+\usepackage{verbatim}
+\usepackage{capt-of}
+\usepackage{wrapfig}
+\usepackage[inline]{enumitem}
+\usepackage[space]{grffile}
 
-% Redefine sections to be the usual size, and say "Section x"
-\makeatletter
-\renewcommand\section{%
-  \@startsection {section}{1}{\z@}%
-  {-3.5ex \@plus -1ex \@minus -.2ex}%
-  {2.3ex \@plus.2ex}%
-  {\normalfont\normalsize\bfseries}%
-}
-\renewcommand\subsection{%
-  \@startsection{subsection}{2}{\z@}%
-  {-3.25ex\@plus -1ex \@minus -.2ex}%
-  {1.5ex \@plus .2ex}%
-  {\normalfont\normalsize\bfseries}%
-}
-\makeatother
-\renewcommand\thesection{\alph{section}}
+%Properly format cleverrefs; cleveref should come after hyperref
+\usepackage[nameinlink,capitalise]{cleveref}
+\crefname{figure}{Figure}{Figures}
+\crefname{enumi}{}{}  %Don't say "item XXX", just "XXX"
+\crefrangeformat{figure}{Figures~#3#1#4--#5#2#6}
+
+
+\newcommand{\note}[1]{{\color{red}\it #1}}
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\etal}{et~al.\@\xspace}
+
+\graphicspath{{./figures/}}
+
+\usepackage{kvoptions}
+\DeclareStringOption[XX]{part}
+\DeclareStringOption[FirstName]{firstname}
+\DeclareStringOption[Surname]{surname}
+\DeclareStringOption[ACRONYM]{acronym}
+\ProcessKeyvalOptions*
+
+\usepackage{titlesec}
+\renewcommand{\thesection}{\alph{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}.}
+\titleformat{\section}{\bfseries}{Section \thesection:}{.5em}{\bfseries\slshape}
+\titleformat{\subsection}{\bfseries}{\thesubsection}{.5em}{\bfseries}
 
 % Header & footer
 \usepackage{fancyhdr}
@@ -33,7 +57,7 @@
 
 % Page geometry
 \usepackage[a4paper,left=20mm,right=20mm,top=15mm,bottom=15mm]{geometry}
-\fancyhfoffset[E,O]{0pt} % recalculate the headers
+\fancyhfoffset[O]{0pt} % recalculate the headers
 
 % Itemize from arj
 \usepackage{enumitem}
@@ -41,8 +65,24 @@
 \renewcommand{\labelitemi}{--}
 
 % Misc
-\usepackage{parskip}
 
-%%% Local Variables:
-%%% mode: latex
-%%% End:
+\lhead{\emph{\erc@surname}}
+\chead{Part \erc@part}
+\rhead{\erc@acronym}
+\cfoot{\thepage}
+
+\usepackage{hyperref} % Should come last
+\hypersetup{
+   colorlinks,
+   menucolor=black,
+   linkcolor=black,
+   citecolor=black,
+   urlcolor=blue
+}
+
+%For autoref (included with hyperref)
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Section}
+\def\subsubsectionautorefname{Section}
+%\newcommand{\subfigureautorefname}{\figureautorefname}
+\newcommand{\nameautoref}[1]{\autoref{#1}, \textbf{\nameref{#1}}}
